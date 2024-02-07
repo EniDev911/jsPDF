@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HTML A PDF</title>
+</head>
+<style>
+	table {
+		font-size: 30px;
+		text-align: center;
+	}
+	#contenedor_jspdf {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: 80%;
+		margin: auto;
+	}
+	table {
+		border-collapse: collapse;
+		width: 600px;
+	}
+	th, td {
+		border: 1px solid black;
+	}
+	thead {
+		background: #f1f2c0;
+	}
+	thead th {
+		width: 10%;
+	}
+	caption {
+		font-weight: bold;
+		font-size: 60px;
+		text-align: left;
+		color: #333;
+		margin-bottom: 16px;
+	}
+</style>
+<body>
+	<div id="contenedor_jspdf">
+		<table>
+			<caption>Robot populares</caption>
+			<thead>
+				<th>Robot</th>
+				<th>Año creación</th>
+				<th>Foto</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Marco</td>
+					<td>2333</td>
+					<td>
+						<img src="//robohash.org/1" alt="" width="60px">
+					</td>
+				</tr>
+				<tr>
+					<td>Alan</td>
+					<td>2211</td>
+					<td>
+						<img src="//robohash.org/322" alt="" width="60px">
+					</td>
+				</tr>
+				<tr>
+					<td>Luis</td>
+					<td>2540</td>
+					<td>
+						<img src="//robohash.org/12" alt="" width="60px">
+					</td>
+				</tr>
+			</tbody>
+		</table><br>
+	</div>
+	<button onclick="{convertHTMLtoPDF()}">Generar PDF</button>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+	</script>
+	<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+	<script>
+		const { jsPDF } = window.jspdf;
+
+		function convertHTMLtoPDF() {
+			// Aquí estamos configurando lo siguiente:
+			// - 'l' : orientación 'landscape'
+			// - 'p' : orientación 'portrait'
+			let doc = new jsPDF('l', 'pt');
+			// Aquí estamos seleccionando el contenedor que vamos a convertir
+			let pdfjs = document.querySelector('#contenedor_jspdf');
+			doc.html(pdfjs, {
+				callback: function(doc) {
+					doc.save("documento.pdf");
+				}
+			});
+		}
+
+	</script>
+</body>
+</html>
+
+
+

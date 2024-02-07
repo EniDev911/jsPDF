@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+</head>
+<body>
+
+	<button id="pdf">Generar PDF</button>
+
+	<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+
+	<script>
+		const {jsPDF} = window.jspdf;
+
+		window.onload = function(){
+
+			function generarPDF() {
+				const doc = jsPDF()
+				doc.text(20, 20, 'Hola mundo');
+				doc.text(20, 30, 'Vamos a generar el pdf desde el lado del cliente');
+				doc.save("documento.pdf")
+			}
+			document.getElementById("pdf").addEventListener('click', () => {
+				generarPDF();
+			})
+		}
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSPDF</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <h1>Tutorial JSPD</h1>
+  <ul>
+    <li><a href="01_comenzando.html">Comenzando</a></li>
+    <li><a href="02_html-a-pdf.html">HTML a PDF</a></li>
+  </ul>
+  <h2>Añadir la CDN</h2>
+  <p>Podemos obtener siempre la última versión a través de unpkg</p>
+  <pre><code class="language-html">
+    &lt;script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"&gt;&lt;/script&gt;
+  </code></pre>
+  <h2>Definir jsPDF para su uso</h2>
+  <p>Utiliza la siguiente línea de código para definir e instanciar jsPDF y así utilizar el objeto jsPDF en js:</p>
+  <pre><code class="language-html">
+    &lt;script&gt;
+    &nbsp;&nbsp;const { jsPDF } = window.jspdf;
+    &nbsp;&nbsp;var doc = new jsPDF();
+    &lt;/script&gt;
+  </code></pre>
+  <h2>Generar un PDF</h2>
+  <p>El siguiente ejemplo muestra cómo utilizar la librería JSPDF para crear un archivo PDF usando js.</p>
+  <p>Define el contenido usando el método <code>text()</code> del objeto <b>jsPDF</b> y usamos el método <code>save()</code> para generar y descargar el archivo PDF:</p>
+  <pre><code class="language-javascript">
+    doc.text(20, 20, 'Hola mundo');
+    doc.text(20, 30, 'Vamos a generar el pdf desde el lado del cliente');
+    doc.save("documento.pdf")
+  </code></pre>
+  <h2>Generar desde HTML a PDF</h2>
+  <p>El siguiente ejemplo demuestra la conversión del documento HTML a un archivo PDF.</p>
+  <p>Para ello primero debemos agregar la CDN de la librería canvas</p>
+  <pre><code class="language-html">
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"&gt;&lt;/script&gt;
+  </code></pre>
+  <p>Y vamos a crear un contenedor para el HTML que queremos convertir:</p>
+  <pre><code class="language-html">
+    &lt;div id="contenedor_jspdf"&gt;
+    &nbsp;&nbsp;&lt;!-- Aquí va ir el contenido para convertir --&gt;
+    &lt;/div&gt;
+  </code></pre>
+  <p>Luego vamos hacer una tabla simple HTML para agregar dentro del contenedor:</p>
+  <pre><code class="language-html">
+    &lt;table&gt;
+    &nbsp;&nbsp;&lt;thead&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Nombre&lt;/th&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Edad&lt;/th&gt;
+    &nbsp;&nbsp;&lt;/thead&gt;
+    &nbsp;&nbsp;&lt;tbody&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Marco&lt;/td&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;33&lt;/td&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Alan&lt;/td&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;21&lt;/td&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Luis&lt;/td&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;40&lt;/td&gt;
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;
+    &nbsp;&nbsp;&lt;/tbody&gt;
+    &lt;/table&gt;
+  </code></pre>
+  <p>Ahora en nuestro javascript vamos añadir lo siguiente:</p>
+  <pre><code class="language-javascript">
+    function convertHTMLtoPDF() {
+    &nbsp;&nbsp;const { jsPDF } = window.jspdf;
+
+    &nbsp;&nbsp;// Aquí estamos configurando lo siguiente:
+    &nbsp;&nbsp;//    - 'l' : orientación 'landscape'
+    &nbsp;&nbsp;//    - 'p' : orientación 'portrait'
+    &nbsp;&nbsp;let doc = new jsPDF('l', 'mm', [1500, 1400]);
+
+    &nbsp;&nbsp;// Aquí estamos seleccionando el contenedor que vamos a convertir
+    &nbsp;&nbsp;let pdfjs = document.querySelector('#contenedor_jspdf');
+
+    &nbsp;&nbsp;doc.html(pdfjs, {
+    &nbsp;&nbsp;&nbsp;&nbsp;callback: function(doc) {
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc.save("documento.pdf");
+    &nbsp;&nbsp;&nbsp;&nbsp;},
+    &nbsp;&nbsp;&nbsp;&nbsp;x: 12,
+    &nbsp;&nbsp;&nbsp;&nbsp;y: 12
+    &nbsp;&nbsp;});
+  }
+</code></pre>
+<script>
+  document.onreadystatechange = () => {
+    if (document.readyState === "complete") {
+      document.querySelectorAll('code[class^="lang"]').forEach(ele => {
+        const cleanContent = ele.innerHTML.trim();
+        ele.innerHTML = cleanContent;
+      })
+    }
+  };
+</script>
+</body>
+</html>
