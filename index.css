@@ -19,3 +19,30 @@ p, .hljs {
   white-space: pre-line;
   tab-size: 2;
 }
+.toc-content {
+  font-size: 1rem;
+  line-height: 1.1;
+  cursor: pointer;
+  display: inline-block;
+  background-color: #ccc9;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+}
+
+/* Indent headings based on their level */
+.toc-h3 {
+  padding-left: 1em;
+}
+
+.toc-h4 {
+  padding-left: 2em;
+}
+
+.toc-h5 {
+  padding-left: 3em;
+}
+
+.toc-h5 {
+  padding-left: 4em;
+}

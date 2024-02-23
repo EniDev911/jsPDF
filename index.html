@@ -12,15 +12,13 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <h1>Tutorial JSPD</h1>
-  <ul>
-    <li><a href="01_comenzando.html">Comenzando</a></li>
-    <li><a href="02_html-a-pdf.html">HTML a PDF</a></li>
+  <h1>Tutorial JSPDF</h1>
+  <div class="article">
   </ul>
   <h2>Añadir la CDN</h2>
   <p>Podemos obtener siempre la última versión a través de unpkg</p>
   <pre><code class="language-html">
-    &lt;script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"&gt;&lt;/script&gt;
   </code></pre>
   <h2>Definir jsPDF para su uso</h2>
   <p>Utiliza la siguiente línea de código para definir e instanciar jsPDF y así utilizar el objeto jsPDF en js:</p>
@@ -95,13 +93,67 @@
     &nbsp;&nbsp;});
   }
 </code></pre>
+<h2>Cómo utilizar fuentes personalizadas con jsPDF</h2>
+<p>Para utilizar una fuente personalizada en su archivo PDF, necesitamos el archivo <code>.ttf</code> de la fuente deseada.</p>
+<p>Una vez tenemos el archivo <code>.ttf</code> descargado, debemos cargarla en esta herramienta <a href="https://peckconsulting.s3.amazonaws.com/fontconverter/fontconverter.html" target="_blank">jsPDF Font Converter</a>.</p>
+<p><strong>No es</strong> necesario ingresar el nombre, el estilo de fuente o el formato del módulo. Esto se completará automáticamente cuando seleccione su archivo de fuente <code>.ttf</code> desde su máquina.</p>
+<p>Después de seleccionar el archivo <code>.ttf</code>, presionamos el botón <code>Create</code> y copiamos el código descargado dentro del script que tenemos vinculado en nuestro proyecto:</p>
+<pre><code class="language-js">
+  const { jsPDF } = window.jspdf;
+  var font = 'AAEAAAARAQAABAAQR1BPU9OJzWAAAGuEAAAzDkdTVUJ...'
+  var callAddFont = function () {
+    &nbsp;&nbsp;this.addFileToVFS('PTSans-Regular-normal.ttf', font);
+    &nbsp;&nbsp;this.addFont('PTSans-Regular-normal.ttf', 'PTSans-Regular', 'normal');
+    };
+  jsPDF.API.events.push(['addFonts', callAddFont])
+
+  doc.sentFont('Lato-Regular', 'normal');
+</code></pre>
+<a href="03-addFont.html">Ver demo</a>
+<hr>
+<h2>Hacer un Screenshot de la página</h2>
+<a href="05-screenshot.html">Ver demo</a>
+
+<hr>
+<h2>Generar un PDF usando una Modal</h2>
+<a href="06-bs-jspdf-modal.html">Ver demo</a>
+</div>
 <script>
+
   document.onreadystatechange = () => {
     if (document.readyState === "complete") {
       document.querySelectorAll('code[class^="lang"]').forEach(ele => {
         const cleanContent = ele.innerHTML.trim();
         ele.innerHTML = cleanContent;
       })
+
+      // TOC
+      const articleContainer = document.querySelector(".article");
+      const headings = articleContainer.querySelectorAll("h2, h3, h4");
+
+      if(headings.length > 2) {
+        // Crear tabla de contenido
+        const details = document.createElement("details");
+        details.setAttribute('class', 'toc-content');
+        const summary = document.createElement("summary");
+        summary.innerHTML = `<strong>Tabla de Contenido</strong>`
+        details.append(summary);
+
+        headings.forEach((el) => {
+          el.id = el.id || el.textContent.toLocaleLowerCase().replace(/\W/g,"-");
+          const p = document.createElement('p');
+          p.setAttribute('class', 'toc-' + el.tagName.toLocaleLowerCase());
+          const a = document.createElement("a");
+          a.setAttribute("class", "toc-link");
+          a.textContent = el.textContent;
+
+          a.href = '#' + el.id;
+          p.append(a);
+          details.append(p)
+        })
+
+        articleContainer.prepend(details);
+      }
     }
   };
 </script>
