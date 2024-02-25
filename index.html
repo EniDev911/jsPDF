@@ -10,6 +10,7 @@
     hljs.highlightAll();
   </script>
   <link rel="stylesheet" href="index.css">
+  
 </head>
 <body>
   <h1>Tutorial JSPDF</h1>
@@ -117,9 +118,58 @@
 <hr>
 <h2>Generar un PDF usando una Modal</h2>
 <a href="06-bs-jspdf-modal.html">Ver demo</a>
+<hr>
+<h2>Crear un archivo PDF dinámicamente</h2>
+<p>Para ello programaremos una sencilla aplicación web. En ella, el usuario podrá crear y exportar <strong>una ficha de un personaje</strong> de ficción. A partir de una plantilla, se podrá introducir datos como el nombre, el tipo de personaje o las habilidades. Y posteriormente, descarga un PDF con dicha indormación.</p>
+<p>Empezaremos preparando la interfaz de usuario. La interfaz se va a componer, por un lado, de un <strong>formulario HTML</strong> con distintos campos. Y por otro, de una etiqueta <strong>iframe</strong>, que nos ayudará a previsualizar el PDF, antes de descargarlo.</p>
+<p>A continuación incluimos una etiqueta <code>&lt;iframe&gt;</code> vacía. Sirviéndolo de la librería de estilos css <strong>Tailwind</strong>, incluiremos clases CSS a todos los elementos para darle estilos. Es importante, incluir <strong>atributos <code>id</code></strong> en las etiquetas de formulario, mensajes de errores, y el iframe. Posteriormente, se usarán esos ids para el <strong>script</strong> Js.</p>
+<p>También destacar que en el listado de opciones de tipo de personaje, se ha incluido un atributo <code>data-image-url</code> especial. Este servirá para incluir una imagen específica para cada tipo.</p>
+<pre><code class="language-html">
+  &lt;body&gt;
+  &nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;form id="form-character-profile"&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label"&gt;Nombre:&lt;/label&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="text" name="name" placeholder="Nombre" class="form-control"&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label"&gt;Sobrenombre:&lt;/label&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="text" name="surname" placeholder="Sobrenombre" class="form-control"&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label"&gt;Descripción:&lt;/label&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;textarea 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name="description"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cols="30"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rows="5"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder="Descripción"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&lt;/textarea&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label"&gt;Tipo:&lt;/label&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select name="type" class="form-select"&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value="wizard"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-image-url="imgs/wizard.png"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;Mago&lt;option&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value="bandit"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-image-url="imgs/bandit.png"
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;Bandido&lt;option&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label"&gt;Fuerza:&lt;/label&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="range" name="strength" value="40"&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/form&gt;
+  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
+  &nbsp;&nbsp;&lt;/div&gt;
+  &lt;/body&gt;
+</code></pre>
 </div>
 <script>
-
   document.onreadystatechange = () => {
     if (document.readyState === "complete") {
       document.querySelectorAll('code[class^="lang"]').forEach(ele => {
@@ -153,9 +203,11 @@
         })
 
         articleContainer.prepend(details);
+
       }
     }
   };
+
 </script>
 </body>
 </html>
